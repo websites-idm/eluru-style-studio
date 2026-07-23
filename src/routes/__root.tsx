@@ -11,6 +11,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Nav } from "@/components/layout/Nav";
+import { Footer } from "@/components/layout/Footer";
+import { Phone } from "lucide-react";
 
 function NotFoundComponent() {
   return (
@@ -95,7 +98,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/logo.png", type: "image/png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -129,8 +132,30 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Nav />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <Footer />
+      
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-6 left-6 z-50 flex flex-col gap-3">
+        <a
+          href="https://wa.me/919392215354"
+          target="_blank"
+          rel="noreferrer"
+          className="flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-transform hover:scale-110 hover:shadow-xl overflow-hidden bg-white"
+          aria-label="WhatsApp Us"
+        >
+          <img src="/whatsapp.png" alt="WhatsApp" className="h-full w-full object-contain" />
+        </a>
+        <a
+          href="tel:+919392215354"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-[color:var(--brown)] text-white shadow-lg transition-transform hover:scale-110 hover:shadow-xl"
+          aria-label="Call Us"
+        >
+          <Phone className="h-5 w-5" />
+        </a>
+      </div>
     </QueryClientProvider>
   );
 }

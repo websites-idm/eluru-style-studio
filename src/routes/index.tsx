@@ -2,6 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 
+import { ServicesPricing } from "@/components/ServicesPricing";
+import { ReserveCTA } from "@/components/ReserveCTA";
+
 import manBefore from "@/assets/hero-man-before.jpg";
 import manAfter from "@/assets/hero-man-after.jpg";
 import womanBefore from "@/assets/hero-woman-before.jpg";
@@ -53,52 +56,7 @@ function useIsMobile() {
   return m;
 }
 
-/* --------------------------------- Nav ---------------------------------- */
 
-function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 24);
-    on();
-    window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
-  }, []);
-  return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "backdrop-blur-md bg-[color:var(--background)]/85 border-b border-border"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4 px-5 py-4 md:px-10 md:py-6">
-        <a href="#top" className="flex min-w-0 items-center gap-2">
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-foreground/80 font-display text-sm">
-            L
-          </span>
-          <span className="hidden truncate text-xs tracking-[0.28em] uppercase text-foreground sm:block">
-            Lifestyle
-          </span>
-        </a>
-        <nav className="hidden items-center gap-8 text-xs tracking-[0.2em] uppercase text-muted-foreground md:flex">
-          <a href="#experience" className="hover:text-foreground transition">Experiences</a>
-          <a href="#gallery" className="hover:text-foreground transition">Gallery</a>
-          <a href="#artists" className="hover:text-foreground transition">Artists</a>
-          <a href="#bridal" className="hover:text-foreground transition">Bridal</a>
-          <a href="#visit" className="hover:text-foreground transition">Visit</a>
-        </nav>
-        <div className="flex justify-end">
-          <a
-            href="#reserve"
-            className="inline-flex items-center gap-2 rounded-full border border-foreground bg-foreground px-4 py-2 text-[11px] tracking-[0.22em] uppercase text-background transition hover:bg-transparent hover:text-foreground"
-          >
-            Book
-          </a>
-        </div>
-      </div>
-    </header>
-  );
-}
 
 /* ---------------------------- Hero — reveal ----------------------------- */
 
@@ -670,197 +628,13 @@ function Stories() {
   );
 }
 
-/* --------------------------- Section: Reserve --------------------------- */
 
-function Reserve() {
-  const [sent, setSent] = useState(false);
-  return (
-    <section id="reserve" className="mx-auto mt-24 max-w-[1400px] px-5 md:mt-40 md:px-10">
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
-        <div className="md:col-span-5">
-          <p className="eyebrow">08 · Reserve</p>
-          <h2 className="font-display mt-4 text-5xl leading-[0.95] tracking-tight md:text-7xl">
-            Book a
-            <span className="italic text-[color:var(--brown)]"> chair.</span>
-          </h2>
-          <p className="mt-6 max-w-md text-sm text-muted-foreground md:text-base">
-            Tell us a bit about your visit — we'll confirm on WhatsApp within an hour
-            during working times.
-          </p>
-          <div className="mt-8 space-y-3 text-sm">
-            <p className="tracking-[0.16em] uppercase text-muted-foreground text-xs">
-              Prefer to talk?
-            </p>
-            <a href="tel:+919999999999" className="block font-display text-3xl underline-offset-4 hover:underline">
-              +91 · 99999 99999
-            </a>
-            <a
-              href="https://wa.me/919999999999"
-              className="inline-flex items-center gap-2 text-xs tracking-[0.22em] uppercase text-[color:var(--brown)]"
-            >
-              WhatsApp us →
-            </a>
-          </div>
-        </div>
-
-        <form
-          onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-          className="md:col-span-7 rounded-sm border border-border bg-surface p-6 md:p-10"
-        >
-          {sent ? (
-            <div className="grid place-items-center py-16 text-center">
-              <p className="eyebrow">Thank you</p>
-              <p className="font-display mt-4 text-3xl md:text-4xl">
-                Your chair is on hold.
-              </p>
-              <p className="mt-3 max-w-sm text-sm text-muted-foreground">
-                We've received your request. Someone from Lifestyle will confirm
-                shortly on WhatsApp.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-              <Field label="Full Name" name="name" placeholder="Your name" />
-              <Field label="Phone" name="phone" placeholder="+91" type="tel" />
-              <div className="md:col-span-2">
-                <label className="eyebrow block mb-2">Service</label>
-                <select
-                  required
-                  defaultValue=""
-                  className="w-full border-b border-border bg-transparent py-3 text-base focus:border-foreground focus:outline-none"
-                >
-                  <option value="" disabled>Select a service</option>
-                  {experiences.map((e) => (
-                    <option key={e.title}>{e.title}</option>
-                  ))}
-                  <option>Hair Colour</option>
-                  <option>Bridal Makeup</option>
-                </select>
-              </div>
-              <Field label="Preferred Date" name="date" type="date" />
-              <Field label="Preferred Time" name="time" type="time" />
-              <div className="md:col-span-2 mt-2 flex items-center justify-between">
-                <p className="text-xs text-muted-foreground">
-                  We reply within an hour during working times.
-                </p>
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-2 rounded-full bg-foreground px-8 py-4 text-xs tracking-[0.24em] uppercase text-background transition hover:bg-[color:var(--brown)]"
-                >
-                  Reserve →
-                </button>
-              </div>
-            </div>
-          )}
-        </form>
-      </div>
-    </section>
-  );
-}
-
-function Field({
-  label, name, placeholder, type = "text",
-}: { label: string; name: string; placeholder?: string; type?: string }) {
-  return (
-    <div>
-      <label htmlFor={name} className="eyebrow block mb-2">{label}</label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required
-        placeholder={placeholder}
-        className="w-full border-b border-border bg-transparent py-3 text-base placeholder:text-muted-foreground/70 focus:border-foreground focus:outline-none"
-      />
-    </div>
-  );
-}
-
-/* -------------------------------- Footer -------------------------------- */
-
-function Footer() {
-  return (
-    <footer id="visit" className="mt-24 border-t border-border bg-background md:mt-40">
-      <div className="mx-auto max-w-[1400px] px-5 py-16 md:px-10 md:py-24">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full border border-foreground font-display">
-                L
-              </span>
-              <span className="text-xs tracking-[0.28em] uppercase">Lifestyle Unisex Salon</span>
-            </div>
-            <p className="font-display mt-8 text-4xl leading-tight md:text-6xl">
-              Come as you are.
-              <span className="block italic text-[color:var(--brown)]">Leave as your best.</span>
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href="tel:+919999999999" className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-[11px] tracking-[0.22em] uppercase text-background hover:bg-[color:var(--brown)]">
-                Call now
-              </a>
-              <a href="https://wa.me/919999999999" className="inline-flex items-center gap-2 rounded-full border border-foreground px-5 py-3 text-[11px] tracking-[0.22em] uppercase text-foreground hover:bg-foreground hover:text-background">
-                WhatsApp
-              </a>
-              <a href="https://facebook.com" className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-[11px] tracking-[0.22em] uppercase text-muted-foreground hover:text-foreground">
-                Facebook
-              </a>
-            </div>
-          </div>
-
-          <div className="md:col-span-3">
-            <p className="eyebrow">Visit</p>
-            <address className="mt-4 not-italic text-sm leading-relaxed text-foreground">
-              DCMS Building,<br />
-              Beside Kotak Mahindra Bank,<br />
-              Narasimharao Pet,<br />
-              Eluru, Andhra Pradesh
-            </address>
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Lifestyle+Unisex+Salon+DCMS+Building+Narasimharao+Pet+Eluru"
-              target="_blank" rel="noreferrer"
-              className="mt-4 inline-flex text-xs tracking-[0.22em] uppercase text-[color:var(--brown)]"
-            >
-              Open in Maps →
-            </a>
-          </div>
-
-          <div className="md:col-span-2">
-            <p className="eyebrow">Hours</p>
-            <ul className="mt-4 space-y-1 text-sm text-foreground">
-              <li>Mon – Sat</li>
-              <li className="text-muted-foreground">10:00 — 21:00</li>
-              <li className="mt-3">Sunday</li>
-              <li className="text-muted-foreground">10:00 — 20:00</li>
-            </ul>
-          </div>
-
-          <div className="md:col-span-2">
-            <p className="eyebrow">Menu</p>
-            <ul className="mt-4 space-y-2 text-sm">
-              <li><a href="#experience" className="hover:text-[color:var(--brown)]">Experiences</a></li>
-              <li><a href="#gallery" className="hover:text-[color:var(--brown)]">Gallery</a></li>
-              <li><a href="#artists" className="hover:text-[color:var(--brown)]">Artists</a></li>
-              <li><a href="#bridal" className="hover:text-[color:var(--brown)]">Bridal</a></li>
-              <li><a href="#reserve" className="hover:text-[color:var(--brown)]">Reserve</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6 text-[11px] tracking-[0.22em] uppercase text-muted-foreground">
-          <span>© {new Date().getFullYear()} Lifestyle Unisex Salon · Eluru</span>
-          <span>Best Salon in Eluru — Hair, Beauty, Spa & Bridal</span>
-        </div>
-      </div>
-    </footer>
-  );
-}
 
 /* --------------------------------- Page --------------------------------- */
 
 function Page() {
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Nav />
       <Hero />
       <Marquee />
       <Experiences />
@@ -869,8 +643,8 @@ function Page() {
       <Why />
       <Bridal />
       <Stories />
-      <Reserve />
-      <Footer />
+      <ReserveCTA />
+      <ServicesPricing />
     </main>
   );
 }
